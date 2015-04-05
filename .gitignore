@@ -1,3 +1,5 @@
 *.pyc
 .ipynb_checkpoints/
 bartcoordinates.json
+bart_coords.geojson
+bart_coords.js
