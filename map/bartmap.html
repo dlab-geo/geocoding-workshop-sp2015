@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>BART Map</title>
+        
+        <link rel='stylesheet' href='http://cdn.leafletjs.com/leaflet-0.7/leaflet.css' />
+        <script src='http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js'></script>
+        <script src='https://api.tiles.mapbox.com/mapbox.js/v1.6.4/mapbox.js'></script>
+        <script src='https://code.jquery.com/jquery-2.1.1.js'></script>
+
+        <script src='geojson/bart_coords.js'></script>
+        <style type='text/css'>
+        
+        body { 
+          margin: 0; 
+          padding: 0; 
+          font-family: Helvetica, sans-serif;
+        }
+
+        #map {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          width: 100%;
+        }
+
+        #overlay {
+          position: absolute;
+          top: 10px;
+          left: 80px;
+          padding: 20px;
+          background-color: rgba(255,255,255,0.5);
+          font-size: 24px;
+          font-weight: bold;
+        }
+        
+        </style>
+
+    </head>
+
+
+    <body>
+        <div id="map"></div>
+        <div id="overlay">BART Stations</div>
+
+        <script type="text/javascript">
+
+        var mapboxTiles = L.tileLayer('http://{s}.tile.openstreetmap.se/hydda/full/{z}/{x}/{y}.png', {
+            attribution: 'Tiles courtesy of <a href="http://openstreetmap.se/" target="_blank">OpenStreetMap Sweden</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        });
+
+        var map = L.map('map')
+            .addLayer(mapboxTiles);
+
+        var markerOptions = {
+            radius: 25,
+            fillColor: 'blue',
+            fillOpacity: 0.5,
+            color: 'white',
+            opacity: 0.75,
+            weight: 1
+        };
+
+// var myMarker = new L.CircleMarker([10,10], { /* Options */ });
+
+// map.on('zoomend', function() {
+//   var currentZoom = map.getZoom();
+//   myMarker.setRadius(currentZoom);
+// });
+
+        var bart = L.geoJson(bart, { 
+            onEachFeature: markerSetup, 
+            pointToLayer: function (feature, latlng) {
+                return L.circle(latlng, 200, markerOptions);
+            }
+        }); 
+
+        bart.addTo(map);
+        map.fitBounds(bart.getBounds(), { padding: [50, 50] });
+
+        function markerSetup(feature, layer) {
+            if (feature.properties && feature.properties.station_name) {
+                layer.bindPopup('Station Name: <br>' + feature.properties.station_name);
+            }
+        }
+        
+        </script>
+    </body>
+</html>
