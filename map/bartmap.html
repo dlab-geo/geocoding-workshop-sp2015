@@ -52,35 +52,32 @@
         var map = L.map('map')
             .addLayer(mapboxTiles);
 
-        var markerOptions = {
-            radius: 25,
-            fillColor: 'blue',
-            fillOpacity: 0.5,
+        var circleOptions = {
+            radius: 7,
+            fillColor: 'steelblue',
+            fillOpacity: 0.85,
             color: 'white',
-            opacity: 0.75,
+            opacity: 0.50,
             weight: 1
         };
 
-// var myMarker = new L.CircleMarker([10,10], { /* Options */ });
-
-// map.on('zoomend', function() {
-//   var currentZoom = map.getZoom();
-//   myMarker.setRadius(currentZoom);
-// });
-
-        var bart = L.geoJson(bart, { 
+        var stations = L.geoJson(bart, {
             onEachFeature: markerSetup, 
             pointToLayer: function (feature, latlng) {
-                return L.circle(latlng, 200, markerOptions);
+                return L.circleMarker(latlng, circleOptions)
+                        .on({mouseover: function(e) {
+                            this.openPopup();
+                            }
+                        });
             }
-        }); 
+        });
 
-        bart.addTo(map);
-        map.fitBounds(bart.getBounds(), { padding: [50, 50] });
+        stations.addTo(map);
+        map.fitBounds(stations.getBounds(), {padding: [25, 25]});
 
         function markerSetup(feature, layer) {
             if (feature.properties && feature.properties.station_name) {
-                layer.bindPopup('Station Name: <br>' + feature.properties.station_name);
+                layer.bindPopup(feature.properties.station_name);
             }
         }
         
