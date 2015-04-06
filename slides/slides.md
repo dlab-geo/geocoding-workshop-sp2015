@@ -1,4 +1,4 @@
-% title: Open Source Geocoding
+% title: Introductory Geocoding
 % subtitle: DSTK and Photon
 % author: Juan Shishido
 % author: School of Information
@@ -69,9 +69,9 @@ Many options
 - SmartyStreets
 - ArcGIS
 - Nominatim
-- OpenCage
 - DSTK
 - Photon
+- geopy
 
 ---
 title: Remote Options
@@ -263,6 +263,47 @@ title: Photon API
 title: Evaluate
 
 <img height=auto width=50% src="figures/google_hq_photon_coords.png"><img height=auto width=50% src="figures/google_hq_address.png">
+
+---
+title: Bonus: geopy
+class: segue dark nobackground
+
+---
+title: geopy
+build_lists: false
+
+Geocoding with Python
+
+Access to many geocoding services
+
+  - OpenStreetMap Nominatim
+  - ESRI ArcGIS
+  - Google Geocoding API
+  - Baidu Maps
+  - Bing Maps
+
+<a href="https://github.com/geopy/geopy" target="_blank">geopy on GitHub</a>
+
+---
+title: geopy
+build_lists: false
+
+Example from the docs
+
+    $ pip install geopy
+
+<pre class="prettyprint" data-lang="python">
+>>> import geopy
+>>> from geopy.geocoders import Nominatim
+>>> geolocator = Nominatim()
+>>> location = geolocator.geocode("1600 Amphitheatre Pkwy, Mountain View, CA")
+>>> print((location.latitude, location.longitude))
+<b>(37.4228139, -122.0850862)</b>
+</pre>
+
+You can also reverse geocode, calculate distances, and more
+
+Check out the geopy <a href="http://geopy.readthedocs.org/en/latest/" target="_blank">documentation</a>
 
 ---
 title: Batch Geocoding
@@ -463,3 +504,19 @@ Sample and test
 Use multiple sources
 
 Map results to verify
+
+---
+title: Tutorial
+build_lists: false
+
+Clone the repo or download the zip file from:
+
+<a href="http://bit.ly/dlab-geocoding" target="_blank">bit.ly/dlab-geocoding</a>
+
+Navigate to the directory and start an IPython notebook instance
+
+    $ ipython notebook
+
+Let's get to work
+
+We'll create a map of the 44 BART stations in the Bay Area

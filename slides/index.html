@@ -13,7 +13,7 @@ URL: https://code.google.com/p/io-2012-slides
 <!DOCTYPE html>
 <html>
 <head>
-  <title> Open Source Geocoding</title>
+  <title> Introductory Geocoding</title>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
   <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
@@ -63,7 +63,7 @@ URL: https://code.google.com/p/io-2012-slides
 <slide class="title-slide segue nobackground">
   <hgroup class="auto-fadein">
 
-    <h1> Open Source Geocoding</h1>
+    <h1> Introductory Geocoding</h1>
     <h2> DSTK and Photon</h2>
     <p> Juan Shishido<br/> School of Information<br/> GSR, D-Lab</p>
   </hgroup>
@@ -149,9 +149,9 @@ URL: https://code.google.com/p/io-2012-slides
 <li>SmartyStreets</li>
 <li>ArcGIS</li>
 <li>Nominatim</li>
-<li>OpenCage</li>
 <li>DSTK</li>
 <li>Photon</li>
+<li>geopy</li>
 </ul></article>
  
 </slide>
@@ -426,6 +426,58 @@ URL: https://code.google.com/p/io-2012-slides
   
     <!-- <aside class="gdbar"><img src="images/google_developers_icon_128.png"></aside> -->
     <hgroup class="auto-fadein">
+      <h2>Bonus: geopy</h2>
+      <h3></h3>
+    </hgroup>
+  
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>geopy</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><p>Geocoding with Python</p>
+<p>Access to many geocoding services</p>
+<ul>
+<li>OpenStreetMap Nominatim</li>
+<li>ESRI ArcGIS</li>
+<li>Google Geocoding API</li>
+<li>Baidu Maps</li>
+<li>Bing Maps</li>
+</ul>
+<p><a href="https://github.com/geopy/geopy" target="_blank">geopy on GitHub</a></p></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>geopy</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><p>Example from the docs</p>
+<pre><code>$ pip install geopy
+</code></pre>
+<pre class="prettyprint" data-lang="python">
+>>> import geopy
+>>> from geopy.geocoders import Nominatim
+>>> geolocator = Nominatim()
+>>> location = geolocator.geocode("1600 Amphitheatre Pkwy, Mountain View, CA")
+>>> print((location.latitude, location.longitude))
+<b>(37.4228139, -122.0850862)</b>
+</pre>
+
+<p>You can also reverse geocode, calculate distances, and more</p>
+<p>Check out the geopy <a href="http://geopy.readthedocs.org/en/latest/" target="_blank">documentation</a></p></article>
+ 
+</slide>
+
+<slide class="segue dark nobackground" >
+  
+    <!-- <aside class="gdbar"><img src="images/google_developers_icon_128.png"></aside> -->
+    <hgroup class="auto-fadein">
       <h2>Batch Geocoding</h2>
       <h3></h3>
     </hgroup>
@@ -683,6 +735,22 @@ json_data.to_csv("geocoded.csv")
 <p>Sample and test</p>
 <p>Use multiple sources</p>
 <p>Map results to verify</p></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Tutorial</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><p>Clone the repo or download the zip file from:</p>
+<p><a href="http://bit.ly/dlab-geocoding" target="_blank">bit.ly/dlab-geocoding</a></p>
+<p>Navigate to the directory and start an IPython notebook instance</p>
+<pre><code>$ ipython notebook
+</code></pre>
+<p>Let's get to work</p>
+<p>We'll create a map of the 44 BART stations in the Bay Area</p></article>
  
 </slide>
 
