@@ -64,8 +64,8 @@ URL: https://code.google.com/p/io-2012-slides
   <hgroup class="auto-fadein">
 
     <h1> Introductory Geocoding</h1>
-    <h2> DSTK and Photon</h2>
-    <p> Juan Shishido<br/> School of Information<br/> GSR, D-Lab</p>
+    <h2> Photon and geopy</h2>
+    <p> Juan Shishido, Andrew Chong <br/> School of Information<br/> GSR, D-Lab</p>
   </hgroup>
 </slide>
 
@@ -145,7 +145,7 @@ URL: https://code.google.com/p/io-2012-slides
     </hgroup>
     <article ><p>Many options</p>
 <ul>
-<li>Google Geocoding</li>
+<li>Google Maps Geocoding API</li>
 <li>SmartyStreets</li>
 <li>ArcGIS</li>
 <li>Nominatim</li>
@@ -185,15 +185,13 @@ URL: https://code.google.com/p/io-2012-slides
 <slide  >
   
     <hgroup>
-      <h2>Data Science Toolkit (DSTK)</h2>
+      <h2>Google Maps Geocoding API</h2>
       <h3></h3>
     </hgroup>
-    <article ><p><a href="http://www.datasciencetoolkit.org/" target="_blank">DSTK</a> is free and open source</p>
+    <article ><p><a href="https://developers.google.com/maps/documentation/geocoding/intro" target="_blank">Google Maps Geocoding API </a> has high accuracy but has usage limits: </p>
 <ul>
-<li>Geocoding plus other functionality</li>
-<li>Use remotely or locally</li>
-<li>Remote service is fast and easy to use</li>
-<li>No usage limits</li>
+<li>2,500 free requests per day, 10 per second </li>
+<li>$0.50/1000 requests, up to 100,000 daily </li>
 </ul></article>
  
 </slide>
@@ -206,8 +204,7 @@ URL: https://code.google.com/p/io-2012-slides
     </hgroup>
     <article ><p><code>/street2coordinates</code></p>
 <p>Pass in the address as a parameter</p>
-<pre><code>http://www.datasciencetoolkit.org/street2coordinates/
-&lt;_your address_&gt;
+<pre><code>https://maps.googleapis.com/maps/api/geocode/json?address=&lt;_your address_&gt;
 </code></pre></article>
  
 </slide>
@@ -220,7 +217,7 @@ URL: https://code.google.com/p/io-2012-slides
     </hgroup>
     <article ><p><code>/street2coordinates</code></p>
 <p>Pass in the address as a parameter</p>
-<pre><code>http://www.datasciencetoolkit.org/street2coordinates/
+<pre><code>https://maps.googleapis.com/maps/api/geocode/json?address=
 1600 Amphitheatre Pkwy, Mountain View, CA
 </code></pre></article>
  
@@ -233,21 +230,24 @@ URL: https://code.google.com/p/io-2012-slides
       <h3></h3>
     </hgroup>
     <article ><pre class="prettyprint" data-lang="JSON">
-{
-  "1600 Amphitheatre Pkwy, Mountain View, CA": {
-    "country_code3": "USA",
-    <b>"latitude": 37.423471,</b>
-    "country_name": "United States",
-    <b>"longitude": -122.086546,</b>
-    "street_address": "1600 Amphitheatre Pkwy",
-    "region": "CA",
-    "confidence": 0.902,
-    "street_number": "1600",
-    "locality": "Mountain View",
-    "street_name": "Amphitheatre Pkwy",
-    "fips_county": "06085",
-    "country_code": "US"
-  }
+{ "results" : ...
+"geometry" : {
+            "location" : {
+               "lat" : 37.422245,
+               "lng" : -122.0840084
+            },
+            "location_type" : "ROOFTOP",
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 37.42359398029149,
+                  "lng" : -122.0826594197085
+               },
+               "southwest" : {
+                  "lat" : 37.4208960197085,
+                  "lng" : -122.0853573802915
+               }
+            }
+         }...
 }
 </pre></article>
  
@@ -269,7 +269,7 @@ URL: https://code.google.com/p/io-2012-slides
       <h2>Try It</h2>
       <h3></h3>
     </hgroup>
-    <article ><pre><code>http://www.datasciencetoolkit.org/street2coordinates/&lt;_your address_&gt;
+    <article ><pre><code>https://maps.googleapis.com/maps/api/geocode/json?address=&lt;_your address_&gt;
 </code></pre>
 <p>What happens when</p>
 <ul>
@@ -278,49 +278,6 @@ URL: https://code.google.com/p/io-2012-slides
 <li>Commas are removed</li>
 <li>Mix case</li>
 </ul></article>
- 
-</slide>
-
-<slide  >
-  
-    <hgroup>
-      <h2>Google-style Geocoder</h2>
-      <h3></h3>
-    </hgroup>
-    <article ><p><code>/maps/api/geocode/json</code></p>
-<p>Pass in the address as a parameter</p>
-<pre><code>http://www.datasciencetoolkit.org/maps/api/geocode/json?sensor=false&amp;address=
-1600 Amphitheatre Pkwy, Mountain View, CA
-</code></pre></article>
- 
-</slide>
-
-<slide  >
-  
-    <hgroup>
-      <h2>Google-style Geocoder</h2>
-      <h3></h3>
-    </hgroup>
-    <article ><pre class="prettyprint" data-lang="JSON">
-{"results": [
-    {
-      "geometry": {
-        "location_type": "ROOFTOP",
-        "location": {
-          <b>"lng": -122.086546,
-          "lat": 37.423471</b>
-        },
-      },
-      "formatted_address": "1600 Amphitheatre Pkwy, Mountain View, CA",
-      "types": [
-        "street_address"
-      ],
-    }
-  ],
-  "status": "OK"}
-</pre>
-
-<p><a href="http://www.datasciencetoolkit.org/maps/api/geocode/json?sensor=false&address=1600%20Amphitheatre%20Pkwy,%20Mountain%20View,%20CA" target="_blank">Full output</a></p></article>
  
 </slide>
 
@@ -478,154 +435,6 @@ URL: https://code.google.com/p/io-2012-slides
   
     <!-- <aside class="gdbar"><img src="images/google_developers_icon_128.png"></aside> -->
     <hgroup class="auto-fadein">
-      <h2>Batch Geocoding</h2>
-      <h3></h3>
-    </hgroup>
-  
-</slide>
-
-<slide  >
-  
-    <hgroup>
-      <h2>Batch Geocoding with DSTK</h2>
-      <h3></h3>
-    </hgroup>
-    <article ><p>Geocode many addresses</p>
-<ul>
-<li>Fast</li>
-<li>Output to file</li>
-</ul>
-<p>Various ways to access DSTK:</p>
-<p>R, Python, Ruby, JavaScript, Command-line</p></article>
- 
-</slide>
-
-<slide  >
-  
-    <hgroup>
-      <h2>cURL</h2>
-      <h3></h3>
-    </hgroup>
-    <article ><p>Command-line URL processing</p>
-<p>Preinstalled on OS X</p>
-<ul>
-<li>Access via terminal</li>
-</ul>
-<p>Install on Windows</p>
-<ul>
-<li><a href="http://curl.haxx.se/download.html" target="_blank">http://curl.haxx.se/download.html</a></li>
-<li>Start Menu &gt; Programs &gt; Accessories &gt; Command Prompt</li>
-</ul></article>
- 
-</slide>
-
-<slide  >
-  
-    <hgroup>
-      <h2>Command-line Code</h2>
-      <h3></h3>
-    </hgroup>
-    <article ><p>Type address out</p>
-<pre data-lang="bash">
-curl -o coordinates.json
--d "1245 Broadway, Oakland, CA 94612"
-http://www.datasciencetoolkit.org/street2coordinates
-</pre>
-
-<p><code>-o</code> writes output to a specified file</p>
-<p><code>-d</code> sends specified data in a POST request</p></article>
- 
-</slide>
-
-<slide  >
-  
-    <hgroup>
-      <h2>Command-line Code</h2>
-      <h3></h3>
-    </hgroup>
-    <article ><p>Read list of addresses from file</p>
-<pre data-lang="bash">
-curl -o coordinates.json
--d @bartaddresses.txt
-http://www.datasciencetoolkit.org/street2coordinates
-</pre>
-
-<p><code>-o</code> writes output to a specified file</p>
-<p><code>-d</code> sends specified data in a POST request</p></article>
- 
-</slide>
-
-<slide  >
-  
-    <hgroup>
-      <h2>bartaddresses.txt</h2>
-      <h3></h3>
-    </hgroup>
-    <article ><p>Data format for <code>/street2coordinates</code> via cURL</p>
-<pre>
-["1245 Broadway, Oakland, CA 94612",
-"2000 Mission Street, San Francisco, CA 94110",
-"1900 Broadway, Oakland, CA 94612",
-"2800 Mission Street, San Francisco, CA 94110",
-...,
-"10 Union Square, Union City, CA 94587",
-"200 Ygnacio Valley Road, Walnut Creek, CA 94596",
-"6501 Golden Gate Drive, Dublin, CA 94568",
-"1451 7th Street, Oakland, CA 94607"]
-</pre></article>
- 
-</slide>
-
-<slide  >
-  
-    <hgroup>
-      <h2>bartaddresses.txt</h2>
-      <h3></h3>
-    </hgroup>
-    <article ><p>Data format</p>
-<ul>
-<li>State must be listed</li>
-<li>Zip code not required</li>
-<li>City depends</li>
-<li>Case does not matter</li>
-<li>Flexible with whitespace</li>
-<li>Lenient on spelling (somewhat)</li>
-</ul></article>
- 
-</slide>
-
-<slide  >
-  
-    <hgroup>
-      <h2>Command-line Output</h2>
-      <h3></h3>
-    </hgroup>
-    <article ><pre>
-{
-  "1451 7th Street, Oakland, CA 94607": {
-    "latitude": 37.805352,
-    "longitude": -122.294959,
-    "street_address": "1451 7th St",
-    "region": "CA",
-    "confidence": 0.902,
-    "street_number": "1451",
-    "locality": "Oakland",
-    "street_name": "7th St",
-    "fips_county": "06001",
-  },
-  "10 Union Square, Union City, CA 94587": {
-    ...
-  },
-  ...,
-}
-</pre></article>
- 
-</slide>
-
-<slide class="segue dark nobackground" >
-  
-    <!-- <aside class="gdbar"><img src="images/google_developers_icon_128.png"></aside> -->
-    <hgroup class="auto-fadein">
       <h2>JSON</h2>
       <h3></h3>
     </hgroup>
@@ -673,15 +482,33 @@ json_data.to_csv("geocoded.csv")
 <slide  >
   
     <hgroup>
+      <h2>Problems in Reference Data</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><p>Varies over services (remote &amp; local)</p>
+<ul>
+<li>Incorrect street ranges, inaccurate or low quality features </li>
+<li>Inaccurate feature attributes</li>
+</ul>
+<p>Year matching between geocoded and reference data:</p>
+<ul>
+<li>Missing streets</li>
+<li>Address changes</li>
+</ul></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
       <h2>Verify Output</h2>
       <h3></h3>
     </hgroup>
     <article ><p>Ways to assess quality</p>
 <ul>
-<li>Check <code>confidence</code> field</li>
 <li>Compare input street name to <code>street_name</code></li>
 <li>Count missing values</li>
-<li>Proportion of "good" to "bad" coordinates</li>
+<li>Test against sub-sample with known or high-quality coordinates </li>
 </ul>
 <p>Because results are based on an underlying database or interpolation method, there will be variation in coordinate quality. In cases where the results are not good enough, consider using another service for those addresses.</p></article>
  
@@ -695,8 +522,7 @@ json_data.to_csv("geocoded.csv")
     </hgroup>
     <article ><p>To GeoJSON</p>
 <p>Link to Census Blocks</p>
-<pre><code>http://data.fcc.gov/api/block/find?latitude=[latitude]
-&amp;longitude=[longitude]&amp;showall=[true/false]
+<pre><code>http://data.fcc.gov/api/block/find?latitude=37.843127&amp;longitude=-122.275285
 </code></pre>
 <p>Block FIPS="<b>060855046011175</b>"</p>
 <p>The first two characters (<b>06</b>) indicate the <b>state</b> (CA), the next three (<b>085</b>) indicate the <b>county</b> (Alameda), the next 6 indicate the <b>census tract</b> (<b>5046.01</b>) and the last four characters indicates the census <b>block</b> group and block number (<b>1175</b>).  The first digit of the block identifies the block group.</p></article>
