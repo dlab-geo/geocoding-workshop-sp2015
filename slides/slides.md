@@ -1,6 +1,6 @@
 % title: Introductory Geocoding
-% subtitle: DSTK and Photon
-% author: Juan Shishido
+% subtitle: Photon and geopy
+% author: Juan Shishido, Andrew Chong 
 % author: School of Information
 % author: GSR, D-Lab
 % thankyou: Thanks!
@@ -65,7 +65,7 @@ build_lists: false
 
 Many options
 
-- Google Geocoding
+- Google Maps Geocoding API
 - SmartyStreets
 - ArcGIS
 - Nominatim
@@ -89,15 +89,13 @@ title: Data Science Toolkit
 class: segue dark nobackground
 
 ---
-title: Data Science Toolkit (DSTK)
+title: Google Maps Geocoding API 
 build_lists: false
 
-<a href="http://www.datasciencetoolkit.org/" target="_blank">DSTK</a> is free and open source
+<a href="https://developers.google.com/maps/documentation/geocoding/intro" target="_blank">Google Maps Geocoding API </a> has high accuracy but has usage limits: 
 
-- Geocoding plus other functionality
-- Use remotely or locally
-- Remote service is fast and easy to use
-- No usage limits
+- 2,500 free requests per day, 10 per second 
+- $0.50/1000 requests, up to 100,000 daily 
 
 ---
 title: Street Address to Coordinates
@@ -106,8 +104,7 @@ title: Street Address to Coordinates
 
 Pass in the address as a parameter
 
-    http://www.datasciencetoolkit.org/street2coordinates/
-    <_your address_>
+    https://maps.googleapis.com/maps/api/geocode/json?address=<_your address_>
 
 ---
 title: Street Address to Coordinates
@@ -116,28 +113,31 @@ title: Street Address to Coordinates
 
 Pass in the address as a parameter
 
-    http://www.datasciencetoolkit.org/street2coordinates/
+    https://maps.googleapis.com/maps/api/geocode/json?address=
     1600 Amphitheatre Pkwy, Mountain View, CA
 
 ---
 title: Street Address to Coordinates
 
 <pre class="prettyprint" data-lang="JSON">
-{
-  "1600 Amphitheatre Pkwy, Mountain View, CA": {
-    "country_code3": "USA",
-    <b>"latitude": 37.423471,</b>
-    "country_name": "United States",
-    <b>"longitude": -122.086546,</b>
-    "street_address": "1600 Amphitheatre Pkwy",
-    "region": "CA",
-    "confidence": 0.902,
-    "street_number": "1600",
-    "locality": "Mountain View",
-    "street_name": "Amphitheatre Pkwy",
-    "fips_county": "06085",
-    "country_code": "US"
-  }
+{ "results" : ...
+"geometry" : {
+            "location" : {
+               "lat" : 37.422245,
+               "lng" : -122.0840084
+            },
+            "location_type" : "ROOFTOP",
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 37.42359398029149,
+                  "lng" : -122.0826594197085
+               },
+               "southwest" : {
+                  "lat" : 37.4208960197085,
+                  "lng" : -122.0853573802915
+               }
+            }
+         }...
 }
 </pre>
 
@@ -150,7 +150,7 @@ title: Evaluate
 title: Try It
 build_lists: false
 
-    http://www.datasciencetoolkit.org/street2coordinates/<_your address_>
+    https://maps.googleapis.com/maps/api/geocode/json?address=<_your address_>
 
 What happens when
 
@@ -158,40 +158,6 @@ What happens when
 - Zip code is omitted
 - Commas are removed
 - Mix case
-
----
-title: Google-style Geocoder
-
-```/maps/api/geocode/json```
-
-Pass in the address as a parameter
-
-    http://www.datasciencetoolkit.org/maps/api/geocode/json?sensor=false&address=
-    1600 Amphitheatre Pkwy, Mountain View, CA
-
----
-title: Google-style Geocoder
-
-<pre class="prettyprint" data-lang="JSON">
-{"results": [
-    {
-      "geometry": {
-        "location_type": "ROOFTOP",
-        "location": {
-          <b>"lng": -122.086546,
-          "lat": 37.423471</b>
-        },
-      },
-      "formatted_address": "1600 Amphitheatre Pkwy, Mountain View, CA",
-      "types": [
-        "street_address"
-      ],
-    }
-  ],
-  "status": "OK"}
-</pre>
-
-<a href="http://www.datasciencetoolkit.org/maps/api/geocode/json?sensor=false&address=1600%20Amphitheatre%20Pkwy,%20Mountain%20View,%20CA" target="_blank">Full output</a>
 
 ---
 title: Photon
@@ -306,120 +272,6 @@ You can also reverse geocode, calculate distances, and more
 Check out the geopy <a href="http://geopy.readthedocs.org/en/latest/" target="_blank">documentation</a>
 
 ---
-title: Batch Geocoding
-class: segue dark nobackground
-
----
-title: Batch Geocoding with DSTK
-build_lists: false
-
-Geocode many addresses
-
-- Fast
-- Output to file
-
-Various ways to access DSTK:
-
-R, Python, Ruby, JavaScript, Command-line
-
----
-title: cURL
-build_lists: false
-
-Command-line URL processing
-
-Preinstalled on OS X
-
-- Access via terminal
-
-Install on Windows
-
-- <a href="http://curl.haxx.se/download.html" target="_blank">http://curl.haxx.se/download.html</a>
-- Start Menu > Programs > Accessories > Command Prompt
-
----
-title: Command-line Code
-
-Type address out
-
-<pre data-lang="bash">
-curl -o coordinates.json
--d "1245 Broadway, Oakland, CA 94612"
-http://www.datasciencetoolkit.org/street2coordinates
-</pre>
-
-```-o``` writes output to a specified file
-
-```-d``` sends specified data in a POST request
-
----
-title: Command-line Code
-
-Read list of addresses from file
-
-<pre data-lang="bash">
-curl -o coordinates.json
--d @bartaddresses.txt
-http://www.datasciencetoolkit.org/street2coordinates
-</pre>
-
-```-o``` writes output to a specified file
-
-```-d``` sends specified data in a POST request
-
----
-title: bartaddresses.txt
-
-Data format for ```/street2coordinates``` via cURL
-
-<pre>
-["1245 Broadway, Oakland, CA 94612",
-"2000 Mission Street, San Francisco, CA 94110",
-"1900 Broadway, Oakland, CA 94612",
-"2800 Mission Street, San Francisco, CA 94110",
-...,
-"10 Union Square, Union City, CA 94587",
-"200 Ygnacio Valley Road, Walnut Creek, CA 94596",
-"6501 Golden Gate Drive, Dublin, CA 94568",
-"1451 7th Street, Oakland, CA 94607"]
-</pre>
-
----
-title: bartaddresses.txt
-
-Data format
-
-- State must be listed
-- Zip code not required
-- City depends
-- Case does not matter
-- Flexible with whitespace
-- Lenient on spelling (somewhat)
-
----
-title: Command-line Output
-
-<pre>
-{
-  "1451 7th Street, Oakland, CA 94607": {
-    "latitude": 37.805352,
-    "longitude": -122.294959,
-    "street_address": "1451 7th St",
-    "region": "CA",
-    "confidence": 0.902,
-    "street_number": "1451",
-    "locality": "Oakland",
-    "street_name": "7th St",
-    "fips_county": "06001",
-  },
-  "10 Union Square, Union City, CA 94587": {
-    ...
-  },
-  ...,
-}
-</pre>
-
----
 title: JSON
 class: segue dark nobackground
 
@@ -452,15 +304,29 @@ json_data.to_csv("geocoded.csv")
 Note: ```.T``` transposes the DataFrame
 
 ---
+title: Problems in Reference Data 
+build_lists: false 
+
+Varies over services (remote & local)
+
+- Incorrect street ranges, inaccurate or low quality features 
+- Inaccurate feature attributes
+
+Year matching between geocoded and reference data
+
+- Missing streets
+- Address changes
+
+
+---
 title: Verify Output
 build_lists: false
 
 Ways to assess quality
 
-- Check ```confidence``` field
 - Compare input street name to ```street_name```
 - Count missing values
-- Proportion of "good" to "bad" coordinates
+- Test against sub-sample with known or high-quality coordinates 
 
 Because results are based on an underlying database or interpolation method, there will be variation in coordinate quality. In cases where the results are not good enough, consider using another service for those addresses.
 
@@ -471,8 +337,7 @@ To GeoJSON
 
 Link to Census Blocks
 
-    http://data.fcc.gov/api/block/find?latitude=[latitude]
-    &longitude=[longitude]&showall=[true/false]
+    http://data.fcc.gov/api/block/find?latitude=<_latitude_>&longitude=<_longitude_>
 
 Block FIPS="<b>060855046011175</b>"
 
