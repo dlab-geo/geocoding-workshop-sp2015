@@ -1,6 +1,6 @@
 # Introductory Geocoding and Mapping
 
-This is a repository of the materials for a D-Lab workshop on geocoding.
+This is a repository of the materials for a D-Lab workshop on geocoding in Python.
 
 To access the workshop slides: <a href="http://bit.ly/dlab-geocoding-slides">bit.ly/dlab-geocoding-slides</a>
 
